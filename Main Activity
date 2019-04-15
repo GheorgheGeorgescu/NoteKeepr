@@ -9,15 +9,10 @@ import android.widget.EditText
 import android.widget.Toast
 import java.io.*
 import java.lang.StringBuilder
-//import java.lang.StringBuffer
 
 class MainActivity : AppCompatActivity() {
 
     private var FILE_NAME:String = "example.txt"
-
-    // val fileName = findViewById<EditText>(R.id.file_text)
-    // val fileName = findViewById<EditText>(R.id.edit_text)
-    // val fileData = findViewById<EditText>(R.id.edit_text)
 
     var mEditText : EditText? = null
 
@@ -26,8 +21,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         mEditText = findViewById(R.id.edit_text)
-       // var svb = findViewById<Button>(R.id.button_save)
-      //  svb.setText()
     }
 
     fun save (v: View) {
@@ -35,36 +28,12 @@ class MainActivity : AppCompatActivity() {
         this.openFileOutput(FILE_NAME, Context.MODE_PRIVATE).use {
             it.write(text.toByteArray())
         }
-
-        // var fos:FileOutputStream? = null
-
-       // try {
-          //  fos = openFileOutput(FILE_NAME, Context.MODE_PRIVATE)
-          //  fos.write(text.toByteArray())
-
            mEditText!!.text.clear()
             Toast.makeText(this, "Saved to " + filesDir + "/" + FILE_NAME, Toast.LENGTH_LONG).show()
-
-
-      /*  } catch (e: FileNotFoundException) {
-            e.printStackTrace()
-        } catch (e: IOException) {
-            e.printStackTrace()
-        } finally {
-            if (fos!= null) {
-             try {
-                 fos.close()
-             } catch (e: IOException) {
-                 e.printStackTrace()
-             }
-            }
-        } */
     }
 
     fun load (v: View) {
-       var fis: FileInputStream //? = null
-        // try {
-            fis = openFileInput(FILE_NAME)
+       var fis: FileInputStream = openFileInput(FILE_NAME)
             var isr:InputStreamReader = InputStreamReader(fis)
             var br:BufferedReader = BufferedReader(isr)
             var sb:StringBuilder = StringBuilder()
@@ -74,18 +43,6 @@ class MainActivity : AppCompatActivity() {
                 sb.append(text).append("\n")
                 text = br.readLine()
             }
-
             mEditText!!.setText(sb.toString())
-        /* } catch (e: FileNotFoundException) {
-            e.printStackTrace()
-        } finally {
-            if (openFileInput(FILE_NAME) != null) { //fis instead of openFileInput(FILE_NAME)
-                try {
-                    openFileInput(FILE_NAME).close() // fis instead openFileInput(FILE_NAME)
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                }
-            }
-        } */
     }
 }
