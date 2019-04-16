@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.content.Context
 import android.view.View
-import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import java.io.*
@@ -12,8 +11,7 @@ import java.lang.StringBuilder
 
 class MainActivity : AppCompatActivity() {
 
-    private var FILE_NAME:String = "example.txt"
-
+    var FILE_NAME : EditText? = null
     var mEditText : EditText? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,28 +19,31 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         mEditText = findViewById(R.id.edit_text)
+        FILE_NAME = findViewById(R.id.file_text)
     }
 
     fun save (v: View) {
+        var file:String = FILE_NAME!!.text.toString()
         var text:String = mEditText!!.text.toString()
-        this.openFileOutput(FILE_NAME, Context.MODE_PRIVATE).use {
+        this.openFileOutput(file, Context.MODE_PRIVATE).use {
             it.write(text.toByteArray())
         }
-           mEditText!!.text.clear()
-            Toast.makeText(this, "Saved to " + filesDir + "/" + FILE_NAME, Toast.LENGTH_LONG).show()
+        mEditText!!.text.clear()
+        Toast.makeText(this, "Saved to " + filesDir + "/" + file, Toast.LENGTH_LONG).show()
     }
 
     fun load (v: View) {
-       var fis: FileInputStream = openFileInput(FILE_NAME)
-            var isr:InputStreamReader = InputStreamReader(fis)
-            var br:BufferedReader = BufferedReader(isr)
-            var sb:StringBuilder = StringBuilder()
-            var text: String? = null
+        var file:String = FILE_NAME!!.text.toString()
+        var fis: FileInputStream = openFileInput(file)
+        var isr:InputStreamReader = InputStreamReader(fis)
+        var br:BufferedReader = BufferedReader(isr)
+        var sb:StringBuilder = StringBuilder()
+        var text: String? = null
+        text = br.readLine()
+        while(text != null) {
+            sb.append(text).append("\n")
             text = br.readLine()
-            while(text != null) {
-                sb.append(text).append("\n")
-                text = br.readLine()
-            }
-            mEditText!!.setText(sb.toString())
+        }
+        mEditText!!.setText(sb.toString())
     }
 }
